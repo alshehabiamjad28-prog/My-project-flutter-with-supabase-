@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fire/style.dart';
+import 'package:fire/widgets/favorite_screen_widgets/article_shimmer_card.dart';
 import 'package:flutter/material.dart';
 
 import '../services/favorites_service.dart';
@@ -64,24 +65,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
   }
 
   Widget _buildLoadingState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-          ),
-          SizedBox(height: 16),
-          Text(
-            '  Loading...',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
-          ),
-        ],
-      ),
+    return Padding(
+      padding: EdgeInsets.only(left: 16,right: 16,bottom: 20),
+      child: ListView.builder(
+
+        itemCount: 4,
+        itemBuilder: (context, index) {
+        return SimpleArticleShimmer();
+
+      },),
     );
   }
 

@@ -1,7 +1,5 @@
-
 import 'package:fire/style.dart';
 import 'package:flutter/material.dart';
-
 import 'add_article_screen.dart';
 import 'favorites_screen.dart';
 import 'home_screen.dart';
@@ -15,33 +13,26 @@ class PageList extends StatefulWidget {
 
 class _PageListState extends State<PageList> {
   int currentIndexs = 0;
-
   GlobalKey<ScaffoldState> skf = GlobalKey();
 
-  List<Widget> Listpages=[
-    Homescreen(),
-    Addarticlescreen(),
-    FavoritesPage()
+  // دالة التبديل بين الصفحات
+  void changePage(int index) {
+    if (mounted) {
+      setState(() {
+        currentIndexs = index;
+      });
+    }
+  }
 
-  ];
   @override
   void initState() {
     super.initState();
-    // عرض الإشعار عند فتح الصفحة
-    @override
-    void dispose() {
-      // ⭐ هذا يوقف كل شيء
-      WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-      super.dispose();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-
-
       key: skf,
       bottomNavigationBar: BottomNavigationBar(
         unselectedIconTheme: IconThemeData(size: 32),
@@ -64,12 +55,16 @@ class _PageListState extends State<PageList> {
             label: "Favorite",
           ),
         ],
-
-
       ),
-
-      body: Listpages.elementAt(currentIndexs),
-
+      body: IndexedStack(
+        index: currentIndexs,
+        children: [
+          // 🔥 مرر دالة changePage لـ Homescreen
+          Homescreen(onChangePage: changePage),
+          Addarticlescreen(),
+          FavoritesPage(),
+        ],
+      ),
     );
   }
 }

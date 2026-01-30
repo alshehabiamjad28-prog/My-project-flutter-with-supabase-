@@ -3,16 +3,21 @@
 - A Flutter application for article management using Supabase as a backend.
 
 ----
-##  ⚠ Important Notice
 
-- The application requires a full internet connection to work, as it completely relies on Supabase for backend and database services.
+## ⚠ Important Notice
 
-----
- ## Overview
-
-- An article management application built with Flutter and Supabase, featuring a complete authentication system, article display, and comment system.
+- The application requires a full internet connection to work, as it completely relies on Supabase
+  for backend and database services.
 
 ----
+
+## Overview
+
+- An article management application built with Flutter and Supabase, featuring a complete
+  authentication system, article display, and comment system.
+
+----
+
 ## Main Features
 
 ## Complete Authentication System
@@ -45,6 +50,7 @@
 · Edit and delete comments capability
 
 ----
+
 ## Technologies Used
 
 · Flutter - UI Framework
@@ -52,7 +58,9 @@
 · Supabase - Backend & Database
 
 ----
+
 ## Screenshots
+
 <div align="center">
   <img src="images2/startscreen.png" width="1198" alt="Start Screen ">
   <img src="images2/onboarding1.png" width="1198" alt="onboarding1">
@@ -73,7 +81,7 @@
   <img src="images2/screen3.png" width="1198" alt="screen3">
   <img src="images2/user_article.png" width="1198" alt="user_article">
   <img src="images2/user_profile.png" width="1198" alt="user_profile">
- 
+
 
 
 
@@ -87,6 +95,7 @@
 ----
 
 ## Project Structure
+
 ````text
 │   main.dart
 │   onboarding_colors.dart
@@ -175,20 +184,21 @@
 
 ````
 
-
 ## 📦 Installation & Run
 
-
 ### Prerequisites
+
 - Flutter SDK 3.35.2 or higher
 - Dart SDK 3.9.0 or higher
 - Android emulator or physical device
 
 ### Run Steps
+
 1. Clone the repository
 2. Navigate to project directory
 3. Install dependencies
 4. Run the application
+
 ## Dependencies
 
 ```yaml
@@ -210,17 +220,17 @@ supabase_flutter: ^2.0.0
 ```
 
 ---
+
 ## Future Development
 
 - Adding new features and improving existing functions to complete the application.
 
-
 ----
+
 ## Developer
 
 - Amjad Alshehabi [aslhehabiamjad28@gmail.com],
 
-
 ---
 
--  If you like this project ⭐
+- If you like this project ⭐

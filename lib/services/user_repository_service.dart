@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepository {
   final SupabaseClient _supabase = Supabase.instance.client;
-  final String tableName = 'user'; // اسم الجدول الذي يحتوي بيانات المستخدمين
+  final String tableName = 'User'; // اسم الجدول الذي يحتوي بيانات المستخدمين
 
   // ===========================
   // إضافة مستخدم جديد أو تحديث بياناته
@@ -67,7 +67,7 @@ class UserRepository {
   // ===========================
   Future<bool> deleteUser(String id) async {
     try {
-      final response = await _supabase.from(tableName).delete().eq('id', id);
+      final response = await _supabase.from('Users').delete().eq('id', id);
       return response != null;
     } catch (e) {
       print('خطأ أثناء حذف المستخدم: $e');

@@ -1,5 +1,6 @@
 
-import 'package:fire/screens/start_screen.dart';
+import 'package:fire/screens/setting_screen.dart';
+import '../../../../Mobile apps/myproject/lib/screens/start_screen.dart';
 import 'package:fire/style.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,11 +13,14 @@ import 'user_article_screen.dart';
 import 'user_profile_screen.dart';
 
 class ProfileDrawer extends StatelessWidget {
+  final Function(int)? onChangePage;
+
+
   final user =Supabase.instance.client.auth.currentUser;
   String username =  AuthService().getUsername();
 
 
-  ProfileDrawer({super.key});
+  ProfileDrawer({super.key, this.onChangePage});
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +58,57 @@ class ProfileDrawer extends StatelessWidget {
                   },
                 ),
 
+                // 1. المفضلات
+                MenuCard(
+                  title: "Favorites",
+                  subtitle: "Your favorite articles",
+                  icon: Icons.favorite,
+                  onTap: () {
+                    Navigator.pop(context);
+                     onChangePage?.call(2);
+                  },
+                ),
+
+// 2. مقال جديد
+                MenuCard(
+                  title: "New Article",
+                  subtitle: "Write a new article",
+                  icon: Icons.edit,
+                  onTap: () {
+                    Navigator.pop(context);
+                    onChangePage?.call(1);
+
+                  },
+                ),
+
+
                 MenuCard(
                   title: "Settings",
                   subtitle: "App preferences and settings",
                   icon: Icons.settings,
                   onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage(),))    ;                // انتقل لصفحة الإعدادات
+                  },
+                ),
+
+
+// 3. المساعدة والدعم
+                MenuCard(
+                  title: "Help & Support",
+                  subtitle: "Help center and FAQs",
+                  icon: Icons.help,
+                  onTap: () {
                     Navigator.pop(context);
-                    // انتقل لصفحة الإعدادات
+                  },
+                ),
+
+// 4. عن التطبيق
+                MenuCard(
+                  title: "About App",
+                  subtitle: "App information and version",
+                  icon: Icons.info,
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                 ),
 
