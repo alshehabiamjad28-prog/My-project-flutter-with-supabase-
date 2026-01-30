@@ -1,9 +1,9 @@
-import 'package:fire/style.dart';
+import 'package:concentric_transition/page_view.dart' show ConcentricPageView;
 import 'package:flutter/material.dart';
-import 'package:concentric_transition/concentric_transition.dart';
-
-import '../Models/OnboardingItem_Model.dart';
-import 'signin_screen.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:myproject/screens/home_screen.dart';
+import '../models/OnboardingItem_Model.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback onFinish; // سيتم تمرير الدالة للانتقال للصفحة الرئيسية
@@ -25,18 +25,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     pages.addAll([
       PageModel(
+
         Image.asset('images/1765138379745.jpg', fit: BoxFit.cover),
         title: "Curated Articles",
         subtitle: "Discover handpicked stories and deep insights.",
-        bgColor: backgroundColor,
         textColor: Colors.black87,
         icon: Icons.menu_book_rounded,
+        bgColor: Colors.white
       ),
       PageModel(
         Image.asset('images/1765138618830.jpg', fit: BoxFit.cover),
         title: "Smooth Reading",
         subtitle: "A clean, distraction-free reader for long content.",
-        bgColor: const Color(0xFFFFFFFF),
+        bgColor: Colors.white,
         textColor: Colors.black87,
         icon: Icons.chrome_reader_mode,
       ),
@@ -44,7 +45,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         Image.asset('images/1765138886520.jpg', fit: BoxFit.cover),
         title: "Save & Share",
         subtitle: "Save favorites and share with your community.",
-        bgColor: const Color(0xFFFBFBFB),
+        bgColor: Colors.white,
         textColor: Colors.black87,
         icon: Icons.bookmark_added,
       ),
@@ -56,7 +57,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
@@ -117,9 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             height: h * 0.055,
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) => LoginPage()),
-                                );
+                               Get.toNamed('/HomeScreen');
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: page.textColor,
@@ -159,13 +158,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               right: w * 0.05,
               child: Container(
                 decoration: BoxDecoration(
-                  color: backgroundColor,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
                     );
                   },
                   style: TextButton.styleFrom(

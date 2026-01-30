@@ -14,15 +14,56 @@ import 'article_detail_screen.dart';
 import 'profile_drawer_screen.dart';
 
 class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
+  final Function(int)? onChangePage;
+  const Homescreen({super.key, this.onChangePage});
 
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
 
 class _HomescreenState extends State<Homescreen> {
+  final FavoritesService _favoritesService = FavoritesService();
   final user = Supabase.instance.client.auth.currentUser;
   bool loding = false;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _removeFromFavorites( String articleId) async {
+    // setState(() {
+    //   _isLoading = true;
+    // });
+
+    try {
+      final success = await _favoritesService.removeFromFavorites(
+       articleId
+      );
+
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Favorites deleted successfully'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error occurred while deleting'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+    // finally {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    // }
+  }
 
   AddFavority(String articleId) async {
     try {
@@ -103,7 +144,7 @@ class _HomescreenState extends State<Homescreen> {
           child: TextField(
             decoration: InputDecoration(
               hintText: 'Search...',
-              hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14,),
+              hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
               prefixIcon: Icon(Icons.search, color: Colors.grey[500], size: 20),
               border: InputBorder.none,
               // إزالة الحدود الداخلية
@@ -133,7 +174,7 @@ class _HomescreenState extends State<Homescreen> {
         ],
       ),
 
-      drawer: ProfileDrawer(),
+      drawer: ProfileDrawer(onChangePage: widget.onChangePage,),
 
       // drawer: ProfileDrawer(),
       body: SafeArea(
@@ -186,6 +227,7 @@ class _HomescreenState extends State<Homescreen> {
                     print('🖼️ رابط الصورة: ${article['img_url']}');
 
                     return ArticleCard(
+                      articleid: article['id']?.toString() ?? '',
                       authorName: article['username']?.toString() ?? 'User',
                       publishDate: article['created_at']?.toString() ?? '',
                       imageUrl: article['image_url']?.toString() ?? '',
@@ -210,6 +252,9 @@ class _HomescreenState extends State<Homescreen> {
                       },
                       onPressedl: () async {
                         AddFavority(article['id']?.toString() ?? '');
+                      },
+                      onPresseddelet: () {
+                        _removeFromFavorites(article['id']?.toString() ?? '');
                       },
                     );
                   },

@@ -1,15 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fire/services/favorites_service.dart';
 
 import 'package:fire/style.dart';
 import 'package:flutter/material.dart';
 
-class ArticleCard extends StatelessWidget {
+class ArticleCard extends StatefulWidget {
+  final String? articleid;
   final String? imageUrl;
   final String? title;
   final String? authorName;
   final String? publishDate;
   final VoidCallback? onTap;
   final Function()? onPressedl;
+  final Function()? onPresseddelet;
 
   const ArticleCard({
     super.key,
@@ -19,7 +22,38 @@ class ArticleCard extends StatelessWidget {
     this.publishDate,
     this.onTap,
     this.onPressedl,
+    this.articleid,
+    this.onPresseddelet,
   });
+
+  @override
+  State<ArticleCard> createState() => _ArticleCardState();
+}
+
+class _ArticleCardState extends State<ArticleCard> {
+  bool chang = false;
+
+  @override
+  void initState() {
+    super.initState(); // ⬅️ يجب أن يكون أول سطر
+    _loadFavoriteStatus();
+  }
+
+  Future<void> _loadFavoriteStatus() async {
+    try {
+      final isFavorite = await FavoritesService().isArticleInFavorites(
+        widget.articleid.toString(),
+      );
+
+      if (mounted) {
+        setState(() {
+          chang = isFavorite;
+        });
+      }
+    } catch (e) {
+      print('❌ خطأ في تحميل حالة المفضلة: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +72,7 @@ class ArticleCard extends StatelessWidget {
         width: cardWidth * 2,
         height: cardHeight,
         child: InkWell(
-          onTap: onTap,
+          onTap: widget.onTap,
           borderRadius: BorderRadius.circular(12),
           child: Container(
             decoration: BoxDecoration(
@@ -61,7 +95,7 @@ class ArticleCard extends StatelessWidget {
               children: [
                 // صورة المقال بالدالة الذكية
                 _buildSmartImage(
-                  imageUrl: imageUrl,
+                  imageUrl: widget.imageUrl,
                   height: imageHeight,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(12),
@@ -80,27 +114,26 @@ class ArticleCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // العنوان - سطر واحد مع نقاط
-                              if (title != null) const SizedBox(height: 13),
+                              if (widget.title != null)
+                                const SizedBox(height: 13),
                               Container(
                                 width: 300,
                                 child: Text(
-                                  title!,
+                                  widget.title!,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFF111827),
                                     height: 1.9,
-                  
-                  
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                  
                                 ),
                               ),
-                  
+
                               // المؤلف والتاريخ - سطر واحد مع نقاط
-                              if (authorName != null || publishDate != null) ...[
+                              if (widget.authorName != null ||
+                                  widget.publishDate != null) ...[
                                 const SizedBox(height: 33),
                                 Container(
                                   width: 230,
@@ -111,7 +144,7 @@ class ArticleCard extends StatelessWidget {
                                         flex: 1,
                                         child: Container(
                                           child: Text(
-                                            authorName!,
+                                            widget.authorName!,
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Color(0xFF6B7280),
@@ -122,16 +155,16 @@ class ArticleCard extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                  
+
                                       // مسافة بين المؤلف والتاريخ
                                       const SizedBox(width: 10),
-                  
+
                                       // التاريخ - بعرض ثابت
                                       Expanded(
                                         flex: 1,
                                         child: Container(
                                           child: Text(
-                                            publishDate!,
+                                            widget.publishDate!,
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Color(0xFF6B7280),
@@ -150,9 +183,8 @@ class ArticleCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                  
-                      Container(
 
+                      Container(
                         margin: const EdgeInsets.only(top: 60, right: 1),
                         // ✅ إصلاح هنا
                         height: 40,
@@ -162,20 +194,36 @@ class ArticleCard extends StatelessWidget {
                           icon: SizedBox(
                             height: 20,
                             width: 20,
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: Colors.black,
-                              size: 23
-                            ),
+                            child: chang == false
+                                ? Icon(
+                                    Icons.favorite_border,
+                                    color: Colors.black,
+                                    size: 23,
+                                  )
+                                : Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                    size: 23,
+                                  ),
                           ),
-                          onPressed: onPressedl,
+                          onPressed: chang == false
+                              ? () {
+                            widget.onPressedl?.call();
+                            setState(() {
+                              chang = !chang;
+                            });
+                          }
+                              : () {
+                            widget.onPresseddelet?.call();
+                            setState(() {
+                              chang = !chang;
+                            });
+                          },
                         ),
-
                       ),
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -244,12 +292,12 @@ class ArticleCard extends StatelessWidget {
   }
 
   String _buildAuthorText() {
-    if (authorName != null && publishDate != null) {
-      return '$authorName • $publishDate';
-    } else if (authorName != null) {
-      return authorName!;
-    } else if (publishDate != null) {
-      return publishDate!;
+    if (widget.authorName != null && widget.publishDate != null) {
+      return '${widget.authorName} • ${widget.publishDate}';
+    } else if (widget.authorName != null) {
+      return widget.authorName!;
+    } else if (widget.publishDate != null) {
+      return widget.publishDate!;
     }
     return '';
   }

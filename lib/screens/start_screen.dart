@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'signin_screen.dart';
+import '../../../../Myflutter/myproject_flutter/lib/screens/signin_screen.dart';
 import 'onboarding_screen.dart';
-import 'listpages_screen.dart';
+import '../../../../Myflutter/myproject_flutter/lib/screens/listpages_screen.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
