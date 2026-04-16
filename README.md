@@ -1,4 +1,4 @@
-## Flutter with Supabase Project
+## Article management spp
 
 - A Flutter application for article management using Supabase as a backend.
 
